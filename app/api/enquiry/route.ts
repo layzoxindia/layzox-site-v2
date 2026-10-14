@@ -16,13 +16,31 @@ function limited(ip: string) {
   return recent.length > 5;
 }
 
-const clean = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
+// Trim, cap length and drop control characters (CR/LF would otherwise reach the email subject).
+// `multiline` keeps line breaks for the message body only.
+const clean = (v: unknown, max: number, multiline = false) =>
+  typeof v === "string"
+    ? v
+        .replace(multiline ? /[\u0000-\u0009\u000b\u000c\u000e-\u001f\u007f]/g : /[\u0000-\u001f\u007f]/g, " ")
+        .trim()
+        .slice(0, max)
+    : "";
+// Single address only: no commas, semicolons, angle brackets or quotes, so it cannot add recipients.
+const EMAIL = /^[^\s@,;<>"']+@[^\s@,;<>"']+\.[^\s@,;<>"']{2,}$/;
 const bad = (error: string, status = 400) => NextResponse.json({ ok: false, error }, { status });
 
 export async function POST(req: Request) {
   const origin = req.headers.get("origin");
   const host = req.headers.get("host");
-  if (origin && host && new URL(origin).host !== host) return bad("Request not allowed.", 403);
+  if (origin && host) {
+    let originHost = "";
+    try {
+      originHost = new URL(origin).host;
+    } catch {
+      return bad("Request not allowed.", 403);
+    }
+    if (originHost !== host) return bad("Request not allowed.", 403);
+  }
 
   const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0].trim();
   if (limited(ip)) return bad("Too many requests. Please try again in a few minutes.", 429);
@@ -46,11 +64,11 @@ export async function POST(req: Request) {
     email: clean(body.email, 160),
     company: clean(body.company, 160),
     type: clean(body.type, 80),
-    message: clean(body.message, 4000),
+    message: clean(body.message, 4000, true),
     page: clean(body.page, 200),
   };
 
-  if (f.email && !/^\S+@\S+\.\S+$/.test(f.email)) return bad("That email address does not look right.");
+  if (f.email && !EMAIL.test(f.email)) return bad("That email address does not look right.");
   if (kind === "project") {
     if (!f.name) return bad("Tell us your name.");
     if (!f.phone && !f.email) return bad("Add an email or a phone number so we can reply.");

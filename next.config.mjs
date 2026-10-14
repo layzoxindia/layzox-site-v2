@@ -9,16 +9,33 @@ const nextConfig = {
       { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
       { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
       { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
+      { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+      // Report-only first: it logs violations in the browser console without blocking anything.
+      // After a clean pass on every page, rename this header to "Content-Security-Policy".
+      {
+        key: "Content-Security-Policy-Report-Only",
+        value: [
+          "default-src 'self'",
+          "script-src 'self' 'unsafe-inline'",
+          "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+          "font-src 'self' https://fonts.gstatic.com data:",
+          "img-src 'self' data: blob:",
+          "connect-src 'self'",
+          "frame-ancestors 'self'",
+          "base-uri 'self'",
+          "form-action 'self'",
+          "object-src 'none'",
+        ].join("; "),
+      },
     ];
     return [
       { source: "/:path*", headers: security },
+      { source: "/motion.js", headers: [{ key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400" }] },
       { source: "/cine.css", headers: [{ key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400" }] },
       { source: "/brand/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=604800, stale-while-revalidate=86400" }] },
     ];
   },
-  // Kept permissive so a stray type warning never blocks a deploy while the
-  // design is still moving. Run `npm run typecheck` to see real type errors,
-  // and set this to false once the site is stable.
+  // Type errors fail the build. ESLint is not configured in this project, so it is skipped during builds.
   typescript: { ignoreBuildErrors: false },
   eslint: { ignoreDuringBuilds: true },
   // Homepage and the section pages (approach, services, ai-agents, principles, contact) are static files in public/ sharing public/cine.css; other pages (/about, /privacy, /terms ...) stay in the app.

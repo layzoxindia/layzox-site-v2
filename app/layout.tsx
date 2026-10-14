@@ -48,7 +48,7 @@ export const viewport: Viewport = {
 };
 
 // Runs before first paint so the page never flashes the wrong mode.
-const themeInit = `try{var t=localStorage.getItem('lx-theme');if(t!=='dark'&&t!=='light'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme='light'}`;
+const themeInit = `try{var t=localStorage.getItem('lzx-theme');if(t!=='dark'&&t!=='light'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme='light'}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

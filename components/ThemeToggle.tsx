@@ -21,7 +21,7 @@ export default function ThemeToggle() {
     const apply = () => {
       document.documentElement.dataset.theme = next;
       try {
-        localStorage.setItem("lx-theme", next);
+        localStorage.setItem("lzx-theme", next);
       } catch {}
       setTheme(next);
     };
