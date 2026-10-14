@@ -38,7 +38,7 @@ const nextConfig = {
   // Type errors fail the build. ESLint is not configured in this project, so it is skipped during builds.
   typescript: { ignoreBuildErrors: false },
   eslint: { ignoreDuringBuilds: true },
-  // Homepage and the section pages (approach, services, ai-agents, principles, contact) are static files in public/ sharing public/cine.css; other pages (/about, /privacy, /terms ...) stay in the app.
+  // Homepage and the section pages (approach, services, ai-agents, principles, contact) are static files in public/ sharing public/cine.css; the about, why-layzox, faq, careers, privacy, terms and /services/* pages are static files too. The matching app/ routes are now unused fallbacks.
   async rewrites() {
     return {
       beforeFiles: [
@@ -48,6 +48,18 @@ const nextConfig = {
         { source: "/ai-agents", destination: "/ai-agents.html" },
         { source: "/principles", destination: "/principles.html" },
         { source: "/contact", destination: "/contact.html" },
+        { source: "/about", destination: "/about.html" },
+        { source: "/why-layzox", destination: "/why-layzox.html" },
+        { source: "/faq", destination: "/faq.html" },
+        { source: "/careers", destination: "/careers.html" },
+        { source: "/privacy", destination: "/privacy.html" },
+        { source: "/terms", destination: "/terms.html" },
+        { source: "/services/custom", destination: "/svc-custom.html" },
+        { source: "/services/automation", destination: "/svc-automation.html" },
+        { source: "/services/web", destination: "/svc-web.html" },
+        { source: "/services/mobile", destination: "/svc-mobile.html" },
+        { source: "/services/cloud", destination: "/svc-cloud.html" },
+        { source: "/services/consulting", destination: "/svc-consulting.html" },
       ],
     };
   },

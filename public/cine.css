@@ -504,22 +504,22 @@ section[id]{scroll-margin-top:72px}
   --bg:#0e0824; --bg-2:#1a1040; --ink:#f1ecfb; --muted:#b0a6d2;
   --rule:rgba(241,236,251,.5); --line:rgba(241,236,251,.22);
   --em:#bda6ff; --cta-bg:#ffc233; --cta-ink:#1c1240; --hard:#8a63ff;
-  --serif-c:#ffc233; --mk:none; --gl:rgba(241,236,251,.07);
+  --serif-c:#ffc233; --mk:linear-gradient(transparent 84%,#ffc233 84%,#ffc233 92%,transparent 92%); --gl:rgba(241,236,251,.07);
   --glass:rgba(255,255,255,.04); --glass-2:rgba(255,255,255,.09); --card:#1a1040;
 }
 @media(prefers-color-scheme:light){:root:not([data-theme="dark"]){
   --bg:#fbfaff; --bg-2:#f0ecfb; --ink:#1c1240; --muted:#5e5585;
   --rule:rgba(28,18,64,.9); --line:rgba(28,18,64,.2);
   --em:#6a3df0; --cta-bg:#6a3df0; --cta-ink:#fff; --hard:#1c1240;
-  --serif-c:#6a3df0; --mk:linear-gradient(transparent 58%,var(--hl) 58%,var(--hl) 90%,transparent 90%); --gl:rgba(28,18,64,.07);
+  --serif-c:#6a3df0; --mk:linear-gradient(transparent 84%,#ffc233 84%,#ffc233 92%,transparent 92%); --gl:rgba(28,18,64,.07);
   --glass:rgba(28,18,64,.03); --glass-2:rgba(28,18,64,.07); --card:#ffffff}}
 :root[data-theme="light"]{
   --bg:#fbfaff; --bg-2:#f0ecfb; --ink:#1c1240; --muted:#5e5585;
   --rule:rgba(28,18,64,.9); --line:rgba(28,18,64,.2);
   --em:#6a3df0; --cta-bg:#6a3df0; --cta-ink:#fff; --hard:#1c1240;
-  --serif-c:#6a3df0; --mk:linear-gradient(transparent 58%,var(--hl) 58%,var(--hl) 90%,transparent 90%); --gl:rgba(28,18,64,.07);
+  --serif-c:#6a3df0; --mk:linear-gradient(transparent 84%,#ffc233 84%,#ffc233 92%,transparent 92%); --gl:rgba(28,18,64,.07);
   --glass:rgba(28,18,64,.03); --glass-2:rgba(28,18,64,.07); --card:#ffffff}
-:root[data-theme="dark"]{--serif-c:#ffc233;--mk:none}
+:root[data-theme="dark"]{--serif-c:#ffc233;--mk:linear-gradient(transparent 84%,#ffc233 84%,#ffc233 92%,transparent 92%)}
 
 /* texture + guide lines */
 body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.06;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
@@ -783,3 +783,15 @@ html.mo-out::before{clip-path:inset(0);pointer-events:all}
 html.mo-in::before{clip-path:inset(0);transition:none}
 html.mo-rev::before{clip-path:inset(0 0 100% 0)}
 @media(prefers-reduced-motion:reduce){html::before{display:none}#mo-prog{display:none}}
+
+/* ===== long-form pages (privacy, terms) ===== */
+.prose{max-width:72ch}
+.prose .updated{font-family:var(--font-m);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 2rem}
+.prose h2{font-size:clamp(1.25rem,2.2vw,1.65rem);letter-spacing:-.015em;margin:2.4rem 0 .8rem}
+.prose p,.prose li{color:var(--muted);line-height:1.7;font-size:1.02rem}
+.prose p{margin:0 0 1rem}
+.prose ul{margin:0 0 1rem;padding-left:1.2rem;display:grid;gap:.6rem}
+.prose strong{color:var(--ink);font-weight:600}
+.prose a{color:var(--em);text-decoration:underline;text-underline-offset:3px}
+.faq details.rv{transition:opacity .9s var(--mo-ease)}
+a.card.lk h3{margin:0}
