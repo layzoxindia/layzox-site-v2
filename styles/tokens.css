@@ -1,0 +1,99 @@
+/* Design tokens. Two modes share one structure; only these values change. */
+
+:root {
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-text: var(--font-newsreader), Georgia, "Times New Roman", serif;
+
+  /* Brand colours, taken from the logo */
+  --navy: #061b3d;
+  --blue: #1b45e6;
+  --cyan: #12b8ff;
+  --lime: #a6ea3f;
+  --coral: #ff6b4a;
+
+  --max: 1240px;
+  --gutter: clamp(20px, 4.2vw, 56px);
+  --radius: 20px;
+  --radius-sm: 12px;
+  --header-h: 72px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Printed-grain texture, inline so there is no extra file to load */
+  --noise: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+
+  /* One gradient per service, used on its number and its glow */
+  --g-custom: linear-gradient(135deg, #1b45e6, #12b8ff);
+  --g-automation: linear-gradient(135deg, #12b8ff, #8b5cf6);
+  --g-web: linear-gradient(135deg, #0a6fa3, #3fcf8e);
+  --g-mobile: linear-gradient(135deg, #ff6b4a, #e83e8c);
+  --g-cloud: linear-gradient(135deg, #0ea5a4, #1b45e6);
+  --g-consulting: linear-gradient(135deg, #8b5cf6, #4c1d95);
+}
+
+/* Light editorial (default) */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f6f7f9;
+  --bg-2: #eceff4;
+  --surface: #ffffff;
+  --surface-2: #f0f3f8;
+  --ink: #061b3d;
+  --muted: #4a5a72;
+  --line: #d9dfe8;
+  --line-strong: #b4bfd0;
+  --field-border: #75849b;
+  --accent: #1b45e6;
+  --accent-ink: #ffffff;
+  --accent-2: #0a6fa3;
+  --hl: #a6ea3f;
+  --shadow: 0 1px 2px rgba(6, 27, 61, 0.06), 0 18px 48px -20px rgba(6, 27, 61, 0.22);
+  --shadow-lg: 0 2px 4px rgba(6, 27, 61, 0.06), 0 40px 90px -30px rgba(6, 27, 61, 0.35);
+  --grain-opacity: 0.035;
+  --glow-opacity: 0;
+  --guide: rgba(6, 27, 61, 0.07);
+}
+
+/* Dark cinematic */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #040a16;
+  --bg-2: #07101f;
+  --surface: #0a1426;
+  --surface-2: #0f1c33;
+  --ink: #eef3fb;
+  --muted: #9db0cb;
+  --line: #1a2a45;
+  --line-strong: #2b4064;
+  --field-border: #5b7399;
+  --accent: #b6f24d;
+  --accent-ink: #04101f;
+  --accent-2: #22c3ff;
+  --hl: #b6f24d;
+  --shadow: 0 0 0 1px rgba(255, 255, 255, 0.04), 0 24px 60px -24px rgba(0, 0, 0, 0.85);
+  --shadow-lg: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 50px 120px -40px rgba(0, 0, 0, 0.95);
+  --grain-opacity: 0.07;
+  --glow-opacity: 1;
+  --guide: rgba(160, 190, 235, 0.08);
+}
+
+/* A section that is always dark, whatever the page mode (used for products) */
+.force-dark {
+  color-scheme: dark;
+  --bg: #040a16;
+  --bg-2: #07101f;
+  --surface: #0a1426;
+  --surface-2: #0f1c33;
+  --ink: #eef3fb;
+  --muted: #9db0cb;
+  --line: #1a2a45;
+  --line-strong: #2b4064;
+  --field-border: #5b7399;
+  --accent: #b6f24d;
+  --accent-ink: #04101f;
+  --accent-2: #22c3ff;
+  --shadow: 0 0 0 1px rgba(255, 255, 255, 0.04), 0 24px 60px -24px rgba(0, 0, 0, 0.85);
+  --guide: rgba(160, 190, 235, 0.08);
+  background: var(--bg);
+  color: var(--ink);
+}

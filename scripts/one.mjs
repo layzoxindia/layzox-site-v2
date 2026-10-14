@@ -1,0 +1,11 @@
+import { chromium } from "@playwright/test";
+const [url, y, w, theme, out, wait = "6000"] = process.argv.slice(2);
+const b = await chromium.launch();
+const c = await b.newContext({ viewport: { width: +w, height: +w > 1000 ? 900 : 844 }, colorScheme: theme });
+await c.addInitScript((t) => localStorage.setItem("lx-theme", t), theme);
+const p = await c.newPage();
+await p.goto(url, { waitUntil: "networkidle" });
+await p.evaluate((v) => window.scrollTo(0, v), +y);
+await p.waitForTimeout(+wait);
+await p.screenshot({ path: out });
+await b.close();

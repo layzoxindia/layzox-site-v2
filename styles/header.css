@@ -1,0 +1,164 @@
+/* Header, theme toggle, mobile menu */
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 80;
+  height: var(--header-h);
+  border-bottom: 1px solid transparent;
+  transition: background 0.35s, border-color 0.35s, backdrop-filter 0.35s;
+}
+.site-header[data-scrolled="true"],
+.site-header[data-open="true"] {
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border-bottom-color: var(--line);
+}
+
+.site-header-bar {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+.brand img {
+  height: 36px;
+  width: auto;
+}
+.logo-on-dark {
+  display: none !important;
+}
+[data-theme="dark"] .logo-on-light {
+  display: none !important;
+}
+[data-theme="dark"] .logo-on-dark {
+  display: block !important;
+}
+
+.nav-desktop {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.nav-link {
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--muted);
+  transition: color 0.2s, background 0.2s;
+}
+.nav-link:hover {
+  color: var(--ink);
+  background: var(--surface-2);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Theme toggle */
+.theme-toggle {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--ink);
+  overflow: hidden;
+  transition: border-color 0.2s, background 0.2s;
+}
+.theme-toggle:hover {
+  border-color: var(--ink);
+  background: var(--surface-2);
+}
+.theme-toggle-icon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transition: transform 0.6s var(--ease), opacity 0.3s;
+}
+.theme-toggle-icon svg {
+  width: 20px;
+  height: 20px;
+}
+/* Light mode shows the moon (click to go dark), dark mode shows the sun */
+[data-theme="light"] .theme-sun,
+:root:not([data-theme]) .theme-sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.5);
+}
+[data-theme="dark"] .theme-moon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.5);
+}
+
+/* Mobile menu */
+.menu-button {
+  display: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+}
+.menu-button svg {
+  width: 22px;
+  height: 22px;
+}
+.mobile-menu {
+  position: fixed;
+  inset: var(--header-h) 0 0 0;
+  background: var(--bg);
+  padding: 16px var(--gutter) 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  overflow: auto;
+}
+.mobile-menu[hidden] {
+  display: none;
+}
+.mobile-link {
+  display: block;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 1.9rem;
+  font-weight: 560;
+  letter-spacing: -0.03em;
+}
+
+@media (max-width: 1080px) {
+  .nav-desktop {
+    display: none;
+  }
+  .menu-button {
+    display: grid;
+  }
+}
+@media (min-width: 1081px) {
+  .mobile-menu {
+    display: none !important;
+  }
+}
+@media (max-width: 560px) {
+  .brand img {
+    height: 26px;
+  }
+  .header-cta {
+    display: none;
+  }
+}
