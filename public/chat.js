@@ -245,14 +245,8 @@ if(rs){
   d.getElementById('rs-print').addEventListener('click',function(){window.print()});
   rs.addEventListener('submit',function(e){e.preventDefault();if(d.getElementById('rs-web').value)return;var err=d.getElementById('rs-err'),nm=d.getElementById('rs-name').value.trim(),em=d.getElementById('rs-email').value.trim();
     if(!EMRE.test(em)){err.textContent='Enter a valid email address.';d.getElementById('rs-email').focus();return}
-    err.textContent='';send({kind:'resource',name:nm,email:em,type:'Automation readiness checklist',page:location.href,website:''},reveal,reveal)});
+    err.textContent='Sending your request…';send({kind:'resource',name:nm,email:em,type:'Automation readiness checklist',page:location.href,website:''},function(){err.textContent='Request received. Your checklist is available below.';reveal()},function(){err.textContent='Email delivery was not confirmed. You can still use the free checklist below.';reveal()})});
 }
 
-/* gentle nudge once per session, after the visitor has spent time on the page */
-var nudge=null;
-function hideNudge(forever){if(nudge){nudge.remove();nudge=null}if(forever)store.set('lzc-nudged',1)}
-if(!store.get('lzc-nudged')&&!lead){setTimeout(function(){if(!panel.hidden||store.get('lzc-nudged'))return;
-  nudge=el('div','lzc-nudge');nudge.setAttribute('role','status');nudge.innerHTML='Planning software, an app or automation? Ask me anything or get a free estimate.<button type="button" aria-label="Dismiss">×</button>';
-  nudge.addEventListener('click',function(e){if(e.target.tagName==='BUTTON'){hideNudge(true)}else open()});
-  d.body.appendChild(nudge);store.set('lzc-nudged',1)},25000)}
+/* The assistant is available from its launcher; no unsolicited chat popup. */
 })();
