@@ -921,3 +921,66 @@ input,textarea,select{accent-color:#195fc2}
 @media(prefers-reduced-motion:reduce){
  .btn,.card,.nav a,.pgtop *{transition:none!important;animation:none!important}
 }
+
+
+/* Connected process blueprints — deliberately not generic marketing cards. */
+.flow-story{
+ --flow-accent:#1b72d3;position:relative;
+ background:linear-gradient(175deg,color-mix(in srgb,var(--bg) 92%,#d3efff),var(--bg));
+ overflow:hidden;
+}
+body[data-domain="automation"],body[data-industry="solar"]{--flow-accent:#068c9c}
+body[data-domain="mobile"],body[data-industry="distribution"]{--flow-accent:#0d8a6f}
+body[data-domain="cloud"],body[data-industry="clinics"]{--flow-accent:#2580aa}
+body[data-domain="consulting"],body[data-industry="real-estate"]{--flow-accent:#2563a2}
+body[data-domain="web"],body[data-industry="education"]{--flow-accent:#187abd}
+body[data-industry="hospitality"]{--flow-accent:#128b93}
+.flow-story .wrap{position:relative}
+.flow-story .flow-top{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(240px,.65fr);
+ column-gap:clamp(24px,7vw,120px);align-items:end;row-gap:26px}
+.flow-top .mono{grid-column:1/-1;color:var(--flow-accent);font-weight:600;letter-spacing:.13em}
+.flow-top h2{margin:0;max-width:17ch;font-size:clamp(2.4rem,5.5vw,5rem);letter-spacing:-.055em}
+.flow-top .lead{max-width:46ch;line-height:1.75}
+.flow-line{counter-reset:flow;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ list-style:none;margin:clamp(55px,8vw,105px) 0 clamp(32px,5vw,55px);padding:0;
+ border-top:2px solid var(--line);gap:0;isolation:isolate}
+.flow-line li{min-width:0;position:relative;padding:40px clamp(16px,2.3vw,36px) 25px 0}
+.flow-line li:not(:first-child){padding-left:clamp(15px,2.3vw,36px);border-left:1px solid var(--line)}
+.flow-line li::before{content:"";position:absolute;top:-9px;left:0;width:16px;height:16px;border-radius:50%;
+ background:var(--bg);border:3px solid var(--flow-accent);box-shadow:0 0 0 6px var(--bg)}
+.flow-line li:not(:first-child)::before{left:clamp(15px,2.3vw,36px)}
+.flow-count{display:inline-flex;font-family:var(--font-m);font-size:.78rem;color:var(--flow-accent);
+ letter-spacing:.15em;border-bottom:1px solid var(--line);padding-bottom:.65rem;margin-bottom:1.15rem}
+.flow-line h3{font-size:clamp(1.22rem,2vw,1.65rem);line-height:1.18;font-weight:700;letter-spacing:-.03em;max-width:16ch}
+.flow-line p{margin:.85rem 0 0;max-width:31ch;line-height:1.7;color:var(--muted);font-size:.94rem}
+.flow-measure{border-top:1px solid var(--line);padding:clamp(25px,4vw,48px) 0 0;
+ display:grid;grid-template-columns:minmax(140px,.5fr) minmax(0,1.1fr) auto;
+ align-items:center;gap:clamp(16px,3vw,50px)}
+.flow-measure .mono{color:var(--flow-accent);font-weight:600}
+.flow-measure p{margin:0;line-height:1.65}
+.flow-measure .lnk{white-space:normal;display:inline-flex;align-items:center;gap:.4rem;
+ text-decoration:underline;text-decoration-color:var(--flow-accent);text-underline-offset:6px}
+@media(max-width:1000px){
+ .flow-top h2{max-width:21ch}
+ .flow-line{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:24px}
+ .flow-line li:nth-child(3){border-left:0;padding-left:0}
+ .flow-line li:nth-child(3)::before{left:0}
+ .flow-line li:nth-child(n+3){border-top:1px solid var(--line);padding-top:32px}
+ .flow-line li:nth-child(n+3)::before{top:-9px}
+ .flow-measure{grid-template-columns:1fr 2fr}
+ .flow-measure .lnk{grid-column:2}
+}
+@media(max-width:640px){
+ .flow-story .flow-top{grid-template-columns:1fr}
+ .flow-top .mono{grid-column:1}
+ .flow-line{grid-template-columns:1fr;border-top:0;margin-top:45px;gap:0}
+ .flow-line li,.flow-line li:not(:first-child),.flow-line li:nth-child(n+3){
+   border-top:0;border-left:2px solid var(--line);padding:0 0 36px 29px;margin-left:7px}
+ .flow-line li::before,.flow-line li:not(:first-child)::before,.flow-line li:nth-child(3)::before{
+   left:-9px;top:0}
+ .flow-line li:last-child{padding-bottom:0}
+ .flow-line h3{max-width:none}
+ .flow-line p{max-width:48ch}
+ .flow-measure{grid-template-columns:1fr;gap:12px}
+ .flow-measure .lnk{grid-column:1;margin-top:8px}
+}
