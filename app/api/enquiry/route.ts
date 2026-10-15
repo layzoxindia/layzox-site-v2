@@ -55,7 +55,7 @@ export async function POST(req: Request) {
   // Honeypot: real visitors never fill this. Pretend success so bots learn nothing.
   if (clean(body.website, 200)) return NextResponse.json({ ok: true });
 
-  const kind = body.kind === "waitlist" ? "waitlist" : body.kind === "project" ? "project" : "";
+  const kind = body.kind === "waitlist" ? "waitlist" : body.kind === "project" ? "project" : body.kind === "resource" ? "resource" : "";
   if (!kind) return bad("Unknown form.");
 
   const f = {
@@ -86,7 +86,7 @@ export async function POST(req: Request) {
   }
 
   const subject =
-    kind === "project" ? `New project enquiry from ${f.name}` : `Product waitlist: ${f.email}`;
+    kind === "project" ? `New project enquiry from ${f.name}` : (kind === "resource" ? `Resource download (${f.type || "resource"}): ${f.email}` : `Product waitlist: ${f.email}`);
   const lines = [
     `Type: ${kind}`,
     f.name && `Name: ${f.name}`,

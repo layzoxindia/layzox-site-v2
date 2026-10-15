@@ -66,20 +66,32 @@ var KB=[
  {id:'contact',k:['contact','phone','number','call','email','mail','reach','baat','talk','human','person','someone','representative','agent please','sales team'],
   a:'You can reach the team directly:\n• Call '+PHONE+'\n• Email '+EMAIL+'\n• Or message us on WhatsApp\n\nOr leave your details here and we will get back to you.',
   q:['Get an estimate'],acts:'contact'},
+ {id:'industry',k:['industry','industries','clinic','hospital','doctor','real estate','property','builder','broker','school','coaching','institute','education','hotel','restaurant','cafe','distribut','wholesale','logistics','transport','solar','energy'],
+  a:'We build for many industries, including clinics and healthcare, real estate, education and coaching, hotels and restaurants, distribution and logistics, and solar businesses. Each industry page shows the common problems and what we would build first.',
+  q:['Get an estimate','Book a call'],links:[['Industries','/industries']]},
+ {id:'models',k:['engagement','model','retainer','dedicated team','hire developer','hourly','fixed price','mvp','monthly','technology','tech stack','stack','react','node','python','flutter'],
+  a:'There are four ways to work with us: a fixed-scope project, a phased MVP, a monthly retainer or a dedicated team. We use proven technology such as React, Next.js, Node.js, Python and cross-platform mobile frameworks, and fit in with what your team already runs.',
+  q:['Get an estimate','How much does it cost?'],links:[['How to work with us','/engagement']]},
+ {id:'book',k:['book','meeting','call me','schedule','appointment','demo','video call','zoom','meet'],
+  a:'You can book a free 30-minute call. Pick a day and time and we confirm the slot by email or phone.',
+  q:['Get an estimate'],links:[['Book a free call','/book']]},
+ {id:'learn',k:['blog','guide','article','checklist','resource','learn','read','pdf','ebook'],
+  a:'We publish practical guides on automation, AI agents and choosing software, plus a free automation readiness checklist.',
+  links:[['Insights','/insights'],['Free checklist','/resources/automation-checklist']]},
  {id:'hello',k:['hi','hello','hey','namaste','good morning','good evening','hii','helo'],
   a:'Hello! I can answer questions about Layzox, or take your requirement and get you a written estimate. What would you like to do?',
   q:['What do you build?','How much does it cost?','Get an estimate']},
  {id:'thanks',k:['thank','thanks','great','ok','okay','cool','nice','dhanyavad','shukriya'],
   a:'Happy to help. Anything else you would like to know?',q:['Get an estimate','Talk to a person']}
 ];
-var QMAP={'What do you build?':'services','How much does it cost?':'price','How long does it take?':'time','How it works':'process','Do I own the code?':'own','AI agents':'ai','Mobile apps':'mobile','Websites':'web','Can you connect our tools?':'tools','Support after launch':'support','Talk to a person':'contact'};
+var QMAP={'Book a call':'book','What do you build?':'services','How much does it cost?':'price','How long does it take?':'time','How it works':'process','Do I own the code?':'own','AI agents':'ai','Mobile apps':'mobile','Websites':'web','Can you connect our tools?':'tools','Support after launch':'support','Talk to a person':'contact'};
 function norm(s){return (' '+s.toLowerCase().replace(/[^a-z0-9ऀ-ॿ ]+/g,' ').replace(/\s+/g,' ')+' ')}
 function match(text){var t=norm(text),best=null,score=0;
   KB.forEach(function(it){var s=0;it.k.forEach(function(k){var kk=k.length<=3?' '+k+' ':k;if(t.indexOf(kk)>-1)s+=k.length>5?2:1});if(s>score){score=s;best=it}});
   return score?best:null}
 
 /* ---------- UI ---------- */
-var css=d.createElement('link');css.rel='stylesheet';css.href='/chat.css?v=1';d.head.appendChild(css);
+if(!d.querySelector('link[href^="/chat.css"]')){var css=d.createElement('link');css.rel='stylesheet';css.href='/chat.css?v=1';d.head.appendChild(css)}
 var ICON={chat:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h7M8.5 14h4"/></svg>',
   x:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
   send:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'};
@@ -191,6 +203,49 @@ if(f){
       .then(function(r){clearTimeout(tm);if(r.ok){btn.disabled=false;f.reset();Array.prototype.forEach.call(f.querySelectorAll('[aria-pressed="true"]'),function(b){b.setAttribute('aria-pressed','false')});err.className='lzq-ok';err.textContent='Thank you. We have your request and will reply soon.';
         try{window.dataLayer&&window.dataLayer.push({event:'generate_lead',form:'estimate'})}catch(x){}}else fail()}).catch(fail)}catch(x){fail()}
   });
+}
+
+/* ---------- shared form helpers ---------- */
+function chips(form){Array.prototype.forEach.call(form.querySelectorAll('.lzq-opts'),function(g){var multi=g.getAttribute('data-multi')==='1';
+  g.addEventListener('click',function(e){var b=e.target.closest('button');if(!b||!g.contains(b))return;var on=b.getAttribute('aria-pressed')==='true';
+    if(!multi)Array.prototype.forEach.call(g.querySelectorAll('button'),function(x){x.setAttribute('aria-pressed','false')});
+    b.setAttribute('aria-pressed',on?'false':'true');form.dispatchEvent(new Event('input'))})})}
+function pick(form,g){return Array.prototype.map.call(form.querySelectorAll('[data-group="'+g+'"] button[aria-pressed="true"]'),function(b){return b.textContent})}
+function send(body,ok,fail){try{var ctl=window.AbortController?new AbortController():null,tm=setTimeout(function(){ctl&&ctl.abort()},9000);
+  fetch('/api/enquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:ctl?ctl.signal:undefined})
+  .then(function(r){clearTimeout(tm);r.ok?ok():fail()}).catch(fail)}catch(e){fail()}}
+var EMRE=/^[^\s@,;<>"']+@[^\s@,;<>"']+\.[^\s@,;<>"']{2,}$/;
+
+/* ---------- book a call ---------- */
+var bk=d.getElementById('book');
+if(bk){
+  var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}
+  d.getElementById('bk-tz').textContent=tz||'not detected';
+  var days=d.getElementById('book-days'),dt=new Date(),n=0;
+  while(n<6){dt.setDate(dt.getDate()+1);if(dt.getDay()===0)continue;var b=el('button','',dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}));b.type='button';b.setAttribute('aria-pressed','false');days.appendChild(b);n++}
+  chips(bk);
+  var bv=function(){var c=d.getElementById('bk-contact').value.trim(),em=EMRE.test(c);return {name:d.getElementById('bk-name').value.trim(),c:c,email:em?c:'',phone:em?'':c,day:pick(bk,'day')[0]||'',slot:pick(bk,'slot')[0]||'',topic:d.getElementById('bk-topic').value.trim()}};
+  var bt=function(v){return 'Hello Layzox, I would like to book a call.'+(v.name?'\nName: '+v.name:'')+(v.day?'\nDay: '+v.day:'')+(v.slot?'\nTime: '+v.slot:'')+(tz?' ('+tz+')':'')+(v.topic?'\nTopic: '+v.topic:'')+(v.c?'\nContact: '+v.c:'')};
+  var bu=function(){d.getElementById('bk-wa').href=wa(bt(bv()))};bk.addEventListener('input',bu);bu();
+  bk.addEventListener('submit',function(e){e.preventDefault();if(d.getElementById('bk-web').value)return;var v=bv(),err=d.getElementById('bk-err'),btn=d.getElementById('bk-send');err.className='lzq-err';
+    if(!v.day||!v.slot){err.textContent='Pick a day and a time.';return}
+    if(!v.name){err.textContent='Add your name.';d.getElementById('bk-name').focus();return}
+    if(!v.email&&v.phone.replace(/\D/g,'').length<8){err.textContent='Add a valid email, or a phone number with country code.';d.getElementById('bk-contact').focus();return}
+    btn.disabled=true;err.textContent='Sending…';
+    send({kind:'project',name:v.name,email:v.email,phone:v.phone,type:'Call request',message:'Call request: '+v.day+', '+v.slot+(tz?' ('+tz+')':'')+(v.topic?'\nTopic: '+v.topic:'')+'\n(Sent from the Book a call page)',page:location.href,website:''},
+      function(){btn.disabled=false;err.className='lzq-ok';err.textContent='Request received. We will confirm your slot by email or phone.';try{window.dataLayer&&window.dataLayer.push({event:'generate_lead',form:'book'})}catch(x){}},
+      function(){btn.disabled=false;err.textContent='We could not send it automatically. Please use “Request on WhatsApp” or email '+EMAIL+'.'})});
+}
+
+/* ---------- checklist resource ---------- */
+var rs=d.getElementById('res');
+if(rs){
+  var reveal=function(){var c=d.getElementById('checklist');c.hidden=false;c.scrollIntoView({behavior:RM?'auto':'smooth'});store.set('lzc-res',1)};
+  if(store.get('lzc-res'))d.getElementById('checklist').hidden=false;
+  d.getElementById('rs-print').addEventListener('click',function(){window.print()});
+  rs.addEventListener('submit',function(e){e.preventDefault();if(d.getElementById('rs-web').value)return;var err=d.getElementById('rs-err'),nm=d.getElementById('rs-name').value.trim(),em=d.getElementById('rs-email').value.trim();
+    if(!EMRE.test(em)){err.textContent='Enter a valid email address.';d.getElementById('rs-email').focus();return}
+    err.textContent='';send({kind:'resource',name:nm,email:em,type:'Automation readiness checklist',page:location.href,website:''},reveal,reveal)});
 }
 
 /* gentle nudge once per session, after the visitor has spent time on the page */

@@ -24,6 +24,20 @@ const pages = [
   "/services/mobile",
   "/services/cloud",
   "/services/consulting",
+  "/industries",
+  "/industries/clinics",
+  "/industries/real-estate",
+  "/industries/education",
+  "/industries/hospitality",
+  "/industries/distribution",
+  "/industries/solar",
+  "/engagement",
+  "/book",
+  "/insights",
+  "/insights/whatsapp-orders-to-one-system",
+  "/insights/ai-voice-agents-lead-follow-up",
+  "/insights/custom-software-vs-off-the-shelf",
+  "/resources/automation-checklist",
 ];
 
 for (const path of pages) {
@@ -68,7 +82,6 @@ test("enquiry API rejects bad input and ignores bots", async ({ request }) => {
 test("legacy corporate links redirect to the new pages", async ({ request }) => {
   const cases: Record<string, string> = {
     "/solutions": "/approach",
-    "/industries": "/services",
     "/engineering": "/approach",
     "/custom-software-development": "/services/custom",
     "/ai-automation": "/services/automation",

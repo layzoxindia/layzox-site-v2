@@ -41,7 +41,7 @@ export const onRequestPost = async ({ request, env }: EnquiryContext): Promise<R
     body = parsed as Fields;
   } catch { return json({ ok: false, error: "Invalid request." }, 400); }
   if (clean(body.website, 200)) return json({ ok: true });
-  const kind = body.kind === "waitlist" ? "waitlist" : body.kind === "project" ? "project" : "";
+  const kind = body.kind === "waitlist" ? "waitlist" : body.kind === "project" ? "project" : body.kind === "resource" ? "resource" : "";
   if (!kind) return json({ ok: false, error: "Unknown form." }, 400);
   const f = {
     name: clean(body.name, 120), phone: clean(body.phone, 40), email: clean(body.email, 160),
@@ -58,7 +58,7 @@ export const onRequestPost = async ({ request, env }: EnquiryContext): Promise<R
   if (!env.RESEND_API_KEY || !env.ENQUIRY_TO_EMAIL) {
     return json({ ok: false, fallback: true, error: "Email is not configured. Please call or WhatsApp us." }, 503);
   }
-  const subject = kind === "project" ? `New project enquiry from ${f.name}` : `Product waitlist: ${f.email}`;
+  const subject = kind === "project" ? `New project enquiry from ${f.name}` : (kind === "resource" ? `Resource download (${f.type || "resource"}): ${f.email}` : `Product waitlist: ${f.email}`);
   const lines = [
     `Type: ${kind}`, f.name && `Name: ${f.name}`, f.phone && `Phone: ${f.phone}`,
     f.email && `Email: ${f.email}`, f.company && `Company: ${f.company}`, f.type && `Project type: ${f.type}`,
