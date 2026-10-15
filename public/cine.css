@@ -924,8 +924,9 @@ input,textarea,select{accent-color:#195fc2}
 
 
 /* Connected process blueprints — deliberately not generic marketing cards. */
+body{--flow-accent:#1b72d3}
 .flow-story{
- --flow-accent:#1b72d3;position:relative;
+ position:relative;
  background:linear-gradient(175deg,color-mix(in srgb,var(--bg) 92%,#d3efff),var(--bg));
  overflow:hidden;
 }
