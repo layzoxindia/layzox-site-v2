@@ -16,3 +16,17 @@
 /services/mobile /svc-mobile.html 200
 /services/cloud /svc-cloud.html 200
 /services/consulting /svc-consulting.html 200
+/software-development-company-ranchi /services/custom 301
+/custom-software-development /services/custom 301
+/ai-automation /services/automation 301
+/web-application-development /services/web 301
+/mobile-app-development /services/mobile 301
+/cloud-data-engineering /services/cloud 301
+/technology-consulting /services/consulting 301
+/solutions /approach 301
+/industries /services 301
+/engineering /approach 301
+/delivery /approach 301
+/process /approach 301
+/products /services 301
+/thank-you /contact 301

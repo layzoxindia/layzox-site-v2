@@ -6,6 +6,12 @@ Owner: Amit. He writes in Hinglish; reply to him in Hinglish, keep code and UI c
 ## Stack
 Next.js 15 App Router, React 19, TypeScript, `motion` (motion/react), `lenis`, plain CSS with variables (no Tailwind). Fonts: Sora + Newsreader via next/font.
 
+## CURRENT LIVE-PAGE SOURCE
+- Static cinematic HTML in `public/*.html` is what the current canonical route mappings serve. EDIT THESE when changing actual visible pages. The Next.js `app/` and `components/` versions are fallback/legacy and should not be mistaken for the published page.
+- Root routes and legacy redirects must be updated in BOTH `public/_redirects` and `next.config.mjs`.
+- Static SEO lives in `public/robots.txt` and `public/sitemap.xml` so Cloudflare static and Next.js can both serve it.
+- Run `npm run routes:check` after any navigation or page change.
+
 ## Structure
 - `lib/content.ts` all copy, links, company details. Edit copy here, not in components.
 - `styles/tokens.css` colours for both themes. `data-theme="light|dark"` on `<html>`, set before paint in `app/layout.tsx`. Light = clean editorial, dark = cinematic. Every new element must look right in BOTH.
@@ -24,4 +30,5 @@ Next.js 15 App Router, React 19, TypeScript, `motion` (motion/react), `lenis`, p
 - Mobile first-check at 390px, plus 768 and 1440. No horizontal scroll.
 
 ## Quality bar
+- GitHub CI lives in `.github/workflows/ci.yml`.
 `npm run typecheck` and `npm run build` must pass with `ignoreBuildErrors` set to false before finishing. Lighthouse mobile target: Performance 90+, Accessibility 100, SEO 100. Contrast WCAG AA.

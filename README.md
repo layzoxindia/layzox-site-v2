@@ -1,45 +1,37 @@
-# LAYZOX website
+# LAYZOX corporate website
 
-Next.js 15 (App Router) + React 19 + Motion (Framer Motion) + Lenis smooth scroll.
-Two themes: clean light editorial and dark cinematic. The toggle is in the header and remembers the choice.
+This repository has **two delivery modes**. The current public-facing design is the cinematic static HTML in `public/`; the Next.js components in `app/` and `components/` are legacy/fallback code. Avoid editing the Next.js homepage when the visible page is `public/cinematic.html`.
 
-## Run
+## Site source of truth
+- Homepage: `public/cinematic.html`
+- Inner pages: `public/*.html`
+- Design system: `public/cine.css`, `public/motion.js`
+- Company artwork: `public/brand/` (preserve original logos)
+- Canonical routes: `public/_redirects` plus `next.config.mjs`
+- SEO for both runtimes: `public/sitemap.xml` and `public/robots.txt`
+- Server form integrations: `functions/api/enquiry.ts` (Cloudflare) and `app/api/enquiry/route.ts` (Next.js)
 
+## Hosting
+**Cloudflare Pages static site:** publish directory `public`; `public/_redirects` maps canonical routes to the HTML assets and older corporate URLs permanently to their replacements. The `functions/` folder must be included so `/api/enquiry` can work. Check deployment settings and ensure uploaded site includes `_redirects`, `_headers`, `sitemap.xml`, `robots.txt`, assets and the function.
+
+**Next.js server:** `npm ci && npm run build && npm start`. `next.config.mjs` maps the exact same public HTML pages and redirects obsolete paths.
+
+## Verify before publishing
 ```bash
-npm install
-npm run dev        # http://localhost:3000
-npm run build && npm start
+npm ci
+npm run typecheck
+npm run routes:check
+npm run build
+npx playwright install chromium
+npm test
 ```
+CI is located at `.github/workflows/ci.yml` and runs these checks on changes to main or pull requests. These checks are not a substitute for real-browser and real-mobile visual review.
 
-Node 20 or newer.
-
-## Before launch
-
-1. `npm install`, then `npm run typecheck` and `npm run build`. Fix anything they report, then set
-   `typescript.ignoreBuildErrors` to `false` in `next.config.mjs`.
-2. Copy `.env.example` to `.env.local` and fill it in (see Forms).
-3. In `lib/content.ts` fill `company.cin` and `company.grievance` (shown in the footer and Privacy Policy).
-4. Have a lawyer read `app/privacy/page.tsx` and `app/terms/page.tsx` before relying on them.
-5. Check the wording in `lib/pages.ts` (About, Why Layzox, FAQ, service pages). It describes how you work; edit anything that is not true for you.
-6. `npm test` runs the Playwright smoke tests (`npx playwright install chromium` the first time).
-
-## Forms
-
-Forms post to `/api/enquiry`. Set `RESEND_API_KEY` and `ENQUIRY_TO_EMAIL` (and a verified `ENQUIRY_FROM_EMAIL`)
-and every enquiry arrives in your inbox. Without them the route answers 503 and the form opens a pre-filled
-WhatsApp message instead, so no lead is lost. Spam protection: hidden honeypot field, 5 submissions per IP per
-10 minutes, same-origin check.
-
-## Structure
-
-- `app/` routes: home, about, why-layzox, faq, careers, privacy, terms, services/[slug], api/enquiry, plus 404, error, OG image, sitemap and robots
-- `components/` Hero, Converge (scroll story), Services (film reel), Scenes (animated explainer scenes), Process, Work, Industries, Products, Contact, Footer
-- `lib/content.ts` home-page copy and company details; `lib/pages.ts` inner-page copy
-- `styles/` tokens.css holds both themes; the rest is split by area
-- `public/brand/` logo files
+## Contact form
+Server-side email delivery needs `RESEND_API_KEY`, `ENQUIRY_TO_EMAIL`, and a verified `ENQUIRY_FROM_EMAIL`. Without these settings the API returns 503 and the visitor must manually send the fallback WhatsApp message. **Do not consider a lead delivered without successful confirmation from the email API.** Test a genuine enquiry before launching.
 
 ## Notes
-
-- The animated scenes are interactive demos with illustrative data (explained in the Terms page). Do not present them as real client dashboards.
-- Reduced-motion users see the finished state of every animation.
-- Deploy: push to GitHub and import in Vercel. Add the environment variables there too.
+- Make no fabricated claims about company history, clients, achievements or products.
+- Demo scenes are illustrative, not real customer dashboards.
+- Review Privacy/Terms with appropriate counsel and verify official company details before publishing.
+- This repository includes historical app components to be simplified in a later controlled change, not blindly deleted.

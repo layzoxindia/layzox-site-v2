@@ -59,3 +59,29 @@ test("enquiry API rejects bad input and ignores bots", async ({ request }) => {
   const bot = await request.post("/api/enquiry", { data: { kind: "project", website: "spam" } });
   expect(bot.ok()).toBeTruthy();
 });
+
+test("legacy corporate links redirect to the new pages", async ({ request }) => {
+  const cases: Record<string, string> = {
+    "/solutions": "/approach",
+    "/industries": "/services",
+    "/engineering": "/approach",
+    "/custom-software-development": "/services/custom",
+    "/ai-automation": "/services/automation",
+    "/cloud-data-engineering": "/services/cloud",
+    "/products": "/services",
+  };
+  for (const [source, target] of Object.entries(cases)) {
+    const res = await request.get(source, { maxRedirects: 0 });
+    expect([301, 308]).toContain(res.status());
+    expect(res.headers().location).toContain(target);
+  }
+});
+
+test("SEO documents and logo assets are served", async ({ request }) => {
+  for (const path of ["/robots.txt", "/sitemap.xml", "/brand/mark.png", "/brand/logo.png"]) {
+    const res = await request.get(path);
+    expect(res.status(), path).toBe(200);
+  }
+  const sitemap = await (await request.get("/sitemap.xml")).text();
+  expect(sitemap).toContain("https://www.layzox.com/services/automation");
+});
