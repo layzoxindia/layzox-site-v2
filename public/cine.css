@@ -1017,3 +1017,9 @@ body[data-industry="hospitality"]{--flow-accent:#128b93}
  .hero .hero-in{padding-top:320px}
  .hero h1{font-size:clamp(2.65rem,10.2vw,3.6rem)}
 }
+
+/* Keep the first screen uncluttered: one hero CTA, not a duplicate fixed CTA. */
+@media(max-width:700px){
+ body.hero-visible .sticky-cta{opacity:0;pointer-events:none;visibility:hidden;transform:translateY(110%)}
+ .sticky-cta{transition:opacity .24s ease,transform .24s ease,visibility .24s}
+}
