@@ -1023,3 +1023,6 @@ body[data-industry="hospitality"]{--flow-accent:#128b93}
  body.hero-visible .sticky-cta{opacity:0;pointer-events:none;visibility:hidden;transform:translateY(110%)}
  .sticky-cta{transition:opacity .24s ease,transform .24s ease,visibility .24s}
 }
+
+/* Reset the browser default body margin: it showed as a light frame around dark sections. */
+html,body{margin:0}
