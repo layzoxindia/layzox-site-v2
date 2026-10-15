@@ -248,5 +248,13 @@ if(rs){
     err.textContent='Sending your request…';send({kind:'resource',name:nm,email:em,type:'Automation readiness checklist',page:location.href,website:''},function(){err.textContent='Request received. Your checklist is available below.';reveal()},function(){err.textContent='Email delivery was not confirmed. You can still use the free checklist below.';reveal()})});
 }
 
+/* Don't repeat the hero's CTA in a fixed mobile dock while the hero is visible. */
+var heroSection=d.getElementById('hero');
+if(heroSection&&'IntersectionObserver' in window){
+  var heroWatch=new IntersectionObserver(function(entries){
+    d.body.classList.toggle('hero-visible',entries[0].isIntersecting);
+  },{threshold:.1});
+  heroWatch.observe(heroSection);
+}
 /* The assistant is available from its launcher; no unsolicited chat popup. */
 })();
