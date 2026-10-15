@@ -106,3 +106,43 @@ test("SEO documents and logo assets are served", async ({ request }) => {
     expect(sitemap).toContain(`https://www.layzox.com${path}`);
   }
 });
+
+
+test("booking preferences include the year and follow the WhatsApp handoff", async ({ page }) => {
+  await page.goto("/book");
+  const firstDay = page.locator("#book-days button").first();
+  await expect(firstDay).toContainText(/20\d{2}/);
+  const day = (await firstDay.innerText()).trim();
+  await firstDay.click();
+  await page.locator('[data-group="slot"] button').first().click();
+  await page.locator("#bk-name").fill("Test Enquirer");
+  await page.locator("#bk-contact").fill("test@example.com");
+  const target = await page.locator("#bk-wa").getAttribute("href");
+  expect(decodeURIComponent(target ?? "")).toContain(day);
+  expect(decodeURIComponent(target ?? "")).toContain("Morning");
+  await expect(page.locator("main")).toContainText("This is a request, not a live availability calendar");
+});
+
+test("contact delivery failure offers explicit WhatsApp handoff without claiming success", async ({ page }) => {
+  await page.route("**/api/enquiry", async (route) => {
+    await route.fulfill({ status: 503, contentType: "application/json", body: '{"ok":false}' });
+  });
+  await page.goto("/contact");
+  await page.locator("#f-name").fill("Test Enquirer");
+  await page.locator("#f-email").fill("test@example.com");
+  await page.locator("#f-msg").fill("A real workflow requirement for a business.");
+  await page.locator("#send").click();
+  await expect(page.locator("#note")).toContainText("Your message has not been sent");
+  await expect(page.locator("#note a")).toHaveAttribute("href", /https:\/\/wa\.me\//);
+});
+
+test("new-company trust statements remain factual and leadership is identified", async ({ page }) => {
+  for (const route of ["/", "/about"]) {
+    await page.goto(route);
+    await expect(page.locator("body")).not.toContainText(/10\+ years|more than 10 years/i);
+  }
+  await page.goto("/about");
+  await expect(page.locator("main")).toContainText("Sumit Kumar");
+  await expect(page.locator("main")).toContainText("Suraj Kumar Singh");
+  await expect(page.locator("main")).toContainText("Amit Kumar Gupta");
+});

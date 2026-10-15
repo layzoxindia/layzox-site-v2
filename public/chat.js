@@ -222,7 +222,7 @@ if(bk){
   var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}
   d.getElementById('bk-tz').textContent=tz||'not detected';
   var days=d.getElementById('book-days'),dt=new Date(),n=0;
-  while(n<6){dt.setDate(dt.getDate()+1);if(dt.getDay()===0)continue;var b=el('button','',dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}));b.type='button';b.setAttribute('aria-pressed','false');days.appendChild(b);n++}
+  while(n<6){dt.setDate(dt.getDate()+1);if(dt.getDay()===0)continue;var b=el('button','',dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'}));b.type='button';b.setAttribute('aria-pressed','false');days.appendChild(b);n++}
   chips(bk);
   var bv=function(){var c=d.getElementById('bk-contact').value.trim(),em=EMRE.test(c);return {name:d.getElementById('bk-name').value.trim(),c:c,email:em?c:'',phone:em?'':c,day:pick(bk,'day')[0]||'',slot:pick(bk,'slot')[0]||'',topic:d.getElementById('bk-topic').value.trim()}};
   var bt=function(v){return 'Hello Layzox, I would like to book a call.'+(v.name?'\nName: '+v.name:'')+(v.day?'\nDay: '+v.day:'')+(v.slot?'\nTime: '+v.slot:'')+(tz?' ('+tz+')':'')+(v.topic?'\nTopic: '+v.topic:'')+(v.c?'\nContact: '+v.c:'')};
