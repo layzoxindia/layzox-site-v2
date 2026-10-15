@@ -72,7 +72,7 @@ var KB=[
  {id:'models',k:['engagement','model','retainer','dedicated team','hire developer','hourly','fixed price','mvp','monthly','technology','tech stack','stack','react','node','python','flutter'],
   a:'There are four ways to work with us: a fixed-scope project, a phased MVP, a monthly retainer or a dedicated team. We use proven technology such as React, Next.js, Node.js, Python and cross-platform mobile frameworks, and fit in with what your team already runs.',
   q:['Get an estimate','How much does it cost?'],links:[['How to work with us','/engagement']]},
- {id:'book',k:['book','meeting','call me','schedule','appointment','demo','video call','zoom','meet'],
+ {id:'book',k:['book','meeting','call me','schedule','appointment','demo','video call','zoom','meet','book a call','book call','request a call','free call','schedule a call'],
   a:'You can book a free 30-minute call. Pick a day and time and we confirm the slot by email or phone.',
   q:['Get an estimate'],links:[['Book a free call','/book']]},
  {id:'learn',k:['blog','guide','article','checklist','resource','learn','read','pdf','ebook'],
