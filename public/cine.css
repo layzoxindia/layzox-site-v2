@@ -985,3 +985,35 @@ body[data-industry="hospitality"]{--flow-accent:#128b93}
  .flow-measure{grid-template-columns:1fr;gap:12px}
  .flow-measure .lnk{grid-column:1;margin-top:8px}
 }
+
+
+/* Screenshot-reviewed mobile hero: the spatial object has its own stage.
+   Prevent headline and interactive controls from crossing the 3D plates. */
+@media(max-width:900px){
+ .hero-copy{position:relative;z-index:4}
+ .hero-in{position:relative;z-index:4}
+ .hero .stack-wrap{opacity:.38;pointer-events:none}
+}
+@media(max-width:700px){
+ .hero{display:block;height:auto;min-height:0}
+ .hero .stack-wrap{left:50%;top:194px;scale:.39;opacity:.9;z-index:0;
+   transform-origin:center center;pointer-events:none}
+ .hero .stack-cap{display:none}
+ .hero .hero-in{padding-top:clamp(335px,84vw,395px);padding-bottom:90px;z-index:3}
+ .hero .hero-copy{max-width:100%;z-index:3}
+ .hero h1{font-size:clamp(2.85rem,10.5vw,4.8rem);line-height:1.01;
+   letter-spacing:-.055em;max-width:12ch}
+ .hero .lead{color:#e2f2ff;line-height:1.7;font-size:clamp(1.02rem,3.5vw,1.2rem)}
+ .hero::after{z-index:1;pointer-events:none;
+   background:linear-gradient(180deg,rgba(9,43,82,.06) 0%,rgba(9,43,82,.1) 24%,
+    rgba(9,43,82,.83) 43%,rgba(9,43,82,.96) 100%)}
+ #gl{z-index:0}
+ .orb-fb{z-index:0}
+ .hero-cta{gap:.7rem}
+ .hero-cta .btn{max-width:100%}
+}
+@media(max-width:420px){
+ .hero .stack-wrap{top:184px;scale:.34}
+ .hero .hero-in{padding-top:320px}
+ .hero h1{font-size:clamp(2.65rem,10.2vw,3.6rem)}
+}
