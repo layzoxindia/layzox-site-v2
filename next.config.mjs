@@ -38,7 +38,7 @@ const nextConfig = {
   // Type errors fail the build. ESLint is not configured in this project, so it is skipped during builds.
   typescript: { ignoreBuildErrors: false },
   eslint: { ignoreDuringBuilds: true },
-  // Homepage and the section pages (approach, services, ai-agents, principles, contact) are static files in public/ sharing public/cine.css; the about, why-layzox, faq, careers, privacy, terms and /services/* pages are static files too. The matching app/ routes are now unused fallbacks.
+  // Homepage and the section pages (approach, services, ai-agents, principles, contact) are static files in public/ sharing public/cine.css; the about, why-layzox, faq, careers, privacy, terms, support, cookies, accessibility, security, sitemap and /services/* pages are static files too. The matching app/ routes are now unused fallbacks.
   // Preserve the old corporate website's indexed and shared links.
   async redirects() {
     return [
@@ -73,6 +73,11 @@ const nextConfig = {
         { source: "/careers", destination: "/careers.html" },
         { source: "/privacy", destination: "/privacy.html" },
         { source: "/terms", destination: "/terms.html" },
+        { source: "/support", destination: "/support.html" },
+        { source: "/cookies", destination: "/cookies.html" },
+        { source: "/accessibility", destination: "/accessibility.html" },
+        { source: "/security", destination: "/security.html" },
+        { source: "/sitemap", destination: "/sitemap.html" },
         { source: "/services/custom", destination: "/svc-custom.html" },
         { source: "/services/automation", destination: "/svc-automation.html" },
         { source: "/services/web", destination: "/svc-web.html" },
