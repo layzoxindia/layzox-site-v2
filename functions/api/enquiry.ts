@@ -29,9 +29,16 @@ export const onRequestPost = async ({ request, env }: EnquiryContext): Promise<R
   recent.push(now); hits.set(ip, recent);
   if (hits.size > 5000) hits.clear();
   let body: Fields;
+  if (!(request.headers.get("content-type") || "").toLowerCase().includes("application/json"))
+    return json({ ok: false, error: "Invalid request." }, 415);
   try {
     if (Number(request.headers.get("content-length") || 0) > 20000) return json({ ok: false, error: "Request too large." }, 413);
-    body = await request.json() as Fields;
+    // Read as text so a body sent without Content-Length (chunked) is still size-limited.
+    const raw = await request.text();
+    if (raw.length > 20000) return json({ ok: false, error: "Request too large." }, 413);
+    const parsed: unknown = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return json({ ok: false, error: "Invalid request." }, 400);
+    body = parsed as Fields;
   } catch { return json({ ok: false, error: "Invalid request." }, 400); }
   if (clean(body.website, 200)) return json({ ok: true });
   const kind = body.kind === "waitlist" ? "waitlist" : body.kind === "project" ? "project" : "";
@@ -73,3 +80,10 @@ export const onRequestPost = async ({ request, env }: EnquiryContext): Promise<R
     return json({ ok: false, error: "We could not deliver your enquiry. Please call or WhatsApp us." }, 502);
   }
 };
+
+// Anything other than POST gets a clear 405 instead of falling through to a static 404.
+export const onRequest = async (): Promise<Response> =>
+  new Response(JSON.stringify({ ok: false, error: "Method not allowed." }), {
+    status: 405,
+    headers: { "content-type": "application/json; charset=utf-8", allow: "POST", "cache-control": "no-store" }
+  });

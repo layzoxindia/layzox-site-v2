@@ -3,30 +3,33 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   async headers() {
+    // Keep in sync with public/_headers (used by Cloudflare Pages).
+    const csp = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline'",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com data:",
+      "img-src 'self' data: blob:",
+      "media-src 'self'",
+      "connect-src 'self'",
+      "frame-src 'none'",
+      "worker-src 'self' blob:",
+      "manifest-src 'self'",
+      "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "object-src 'none'",
+      "upgrade-insecure-requests",
+    ].join("; ");
     const security = [
       { key: "X-Content-Type-Options", value: "nosniff" },
-      { key: "X-Frame-Options", value: "SAMEORIGIN" },
+      { key: "X-Frame-Options", value: "DENY" },
       { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-      { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+      { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()" },
       { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
-      { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-      // Report-only first: it logs violations in the browser console without blocking anything.
-      // After a clean pass on every page, rename this header to "Content-Security-Policy".
-      {
-        key: "Content-Security-Policy-Report-Only",
-        value: [
-          "default-src 'self'",
-          "script-src 'self' 'unsafe-inline'",
-          "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-          "font-src 'self' https://fonts.gstatic.com data:",
-          "img-src 'self' data: blob:",
-          "connect-src 'self'",
-          "frame-ancestors 'self'",
-          "base-uri 'self'",
-          "form-action 'self'",
-          "object-src 'none'",
-        ].join("; "),
-      },
+      { key: "Cross-Origin-Opener-Policy", value: "same-origin-allow-popups" },
+      { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+      { key: "Content-Security-Policy", value: csp },
     ];
     return [
       { source: "/:path*", headers: security },
@@ -38,10 +41,19 @@ const nextConfig = {
   // Type errors fail the build. ESLint is not configured in this project, so it is skipped during builds.
   typescript: { ignoreBuildErrors: false },
   eslint: { ignoreDuringBuilds: true },
-  // Homepage and the section pages (approach, services, ai-agents, principles, contact) are static files in public/ sharing public/cine.css; the about, why-layzox, faq, careers, privacy, terms, support, cookies, accessibility, security, sitemap and /services/* pages are static files too. The matching app/ routes are now unused fallbacks.
+  // Every visible page is a static file in public/ (index.html, approach.html, services/custom.html ...) sharing public/cine.css.
+  // On Cloudflare Pages those files are served at clean URLs automatically; here the rewrites below do the same job.
+  // The matching app/ routes are unused fallbacks.
   // Preserve the old corporate website's indexed and shared links.
   async redirects() {
     return [
+      // Serve the site on one host only: layzox.com -> www.layzox.com
+      { source: "/:path*", has: [{ type: "host", value: "layzox.com" }], destination: "https://www.layzox.com/:path*", permanent: true },
+      // Earlier builds of this site
+      { source: "/cinematic", destination: "/", permanent: true },
+      { source: "/cinematic.html", destination: "/", permanent: true },
+      ...["custom", "automation", "web", "mobile", "cloud", "consulting"].map((s) => ({ source: `/svc-${s}`, destination: `/services/${s}`, permanent: true })),
+      // Old corporate website
       { source: "/software-development-company-ranchi", destination: "/services/custom", permanent: true },
       { source: "/custom-software-development", destination: "/services/custom", permanent: true },
       { source: "/ai-automation", destination: "/services/automation", permanent: true },
@@ -61,7 +73,7 @@ const nextConfig = {
   async rewrites() {
     return {
       beforeFiles: [
-        { source: "/", destination: "/cinematic.html" },
+        { source: "/", destination: "/index.html" },
         { source: "/approach", destination: "/approach.html" },
         { source: "/services", destination: "/services.html" },
         { source: "/ai-agents", destination: "/ai-agents.html" },
@@ -78,12 +90,12 @@ const nextConfig = {
         { source: "/accessibility", destination: "/accessibility.html" },
         { source: "/security", destination: "/security.html" },
         { source: "/sitemap", destination: "/sitemap.html" },
-        { source: "/services/custom", destination: "/svc-custom.html" },
-        { source: "/services/automation", destination: "/svc-automation.html" },
-        { source: "/services/web", destination: "/svc-web.html" },
-        { source: "/services/mobile", destination: "/svc-mobile.html" },
-        { source: "/services/cloud", destination: "/svc-cloud.html" },
-        { source: "/services/consulting", destination: "/svc-consulting.html" },
+        { source: "/services/custom", destination: "/services/custom.html" },
+        { source: "/services/automation", destination: "/services/automation.html" },
+        { source: "/services/web", destination: "/services/web.html" },
+        { source: "/services/mobile", destination: "/services/mobile.html" },
+        { source: "/services/cloud", destination: "/services/cloud.html" },
+        { source: "/services/consulting", destination: "/services/consulting.html" },
       ],
     };
   },
