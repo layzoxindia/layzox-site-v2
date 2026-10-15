@@ -77,6 +77,10 @@ test("responsive quality screenshots for human review", async ({ page }, testInf
         await new Promise<void>((resolve) => setTimeout(resolve, 75));
       }
       window.scrollTo(0, 0);
+      // Full-page capture can repaint offscreen elements before IO settles.
+      // The interaction tests below independently check actual reveal logic.
+      document.querySelectorAll(".rv").forEach((el) => el.classList.add("in"));
+      document.querySelectorAll(".fx, h1, h2").forEach((el) => el.classList.add("go"));
     });
     await page.screenshot({
       path: testInfo.outputPath("quality-" + labels[i] + ".png"),
@@ -94,4 +98,22 @@ test("mobile headline remains below the immersive 3D visual stage", async ({ pag
   const rect = await title.boundingBox();
   expect(rect?.y).toBeGreaterThan(270);
   await expect(page.locator(".hero-cta .btn").first()).toBeVisible();
+});
+
+
+test("the contact CTA really becomes visible when the visitor reaches it", async ({ page }) => {
+  await page.goto("/services/custom");
+  const cta = page.locator(".ctab-in.rv");
+  await cta.scrollIntoViewIfNeeded();
+  await expect(cta).toHaveClass(/in/);
+  await expect(cta.getByRole("link", { name: /Discuss your project/i })).toBeVisible();
+});
+
+test("mobile homepage never shows a duplicate fixed estimate button over the hero", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile", "mobile-specific conversion dock");
+  await page.goto("/");
+  await expect(page.locator("body")).toHaveClass(/hero-visible/);
+  await expect(page.locator(".sticky-cta")).toBeHidden();
+  await page.locator("#industries-home").scrollIntoViewIfNeeded();
+  await expect(page.locator(".sticky-cta")).toBeVisible();
 });
