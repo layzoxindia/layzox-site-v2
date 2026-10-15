@@ -103,3 +103,15 @@
 }
 .lzq-card{box-shadow:0 24px 56px -35px rgba(10,65,117,.25)}
 .lzq-opts button:focus-visible{outline:3px solid #20a9c7;outline-offset:3px}
+
+/* Mobile: keep assistant accessible above the conversion dock. */
+@media(max-width:700px){
+ .lzc-launch{right:16px;bottom:calc(88px + env(safe-area-inset-bottom,0px));min-height:48px;
+   padding:0 .55rem;border-radius:50%;width:52px;height:52px;justify-content:center}
+ .lzc-launch .lzc-face{width:40px;height:40px}
+ .lzc-label{display:none}
+ .lzc-panel{z-index:150}
+}
+@media(max-width:700px) and (max-height:550px){
+ .lzc-launch{bottom:calc(82px + env(safe-area-inset-bottom,0px))}
+}
