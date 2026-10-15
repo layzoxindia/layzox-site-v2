@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "playwright test"
+    "test": "playwright test",
+    "routes:check": "node scripts/check-site-routes.mjs"
   },
   "dependencies": {
     "lenis": "^1.3.0",

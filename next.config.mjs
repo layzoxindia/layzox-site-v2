@@ -39,6 +39,25 @@ const nextConfig = {
   typescript: { ignoreBuildErrors: false },
   eslint: { ignoreDuringBuilds: true },
   // Homepage and the section pages (approach, services, ai-agents, principles, contact) are static files in public/ sharing public/cine.css; the about, why-layzox, faq, careers, privacy, terms and /services/* pages are static files too. The matching app/ routes are now unused fallbacks.
+  // Preserve the old corporate website's indexed and shared links.
+  async redirects() {
+    return [
+      { source: "/software-development-company-ranchi", destination: "/services/custom", permanent: true },
+      { source: "/custom-software-development", destination: "/services/custom", permanent: true },
+      { source: "/ai-automation", destination: "/services/automation", permanent: true },
+      { source: "/web-application-development", destination: "/services/web", permanent: true },
+      { source: "/mobile-app-development", destination: "/services/mobile", permanent: true },
+      { source: "/cloud-data-engineering", destination: "/services/cloud", permanent: true },
+      { source: "/technology-consulting", destination: "/services/consulting", permanent: true },
+      { source: "/solutions", destination: "/approach", permanent: true },
+      { source: "/industries", destination: "/services", permanent: true },
+      { source: "/engineering", destination: "/approach", permanent: true },
+      { source: "/delivery", destination: "/approach", permanent: true },
+      { source: "/process", destination: "/approach", permanent: true },
+      { source: "/products", destination: "/services", permanent: true },
+      { source: "/thank-you", destination: "/contact", permanent: true },
+    ];
+  },
   async rewrites() {
     return {
       beforeFiles: [
