@@ -795,3 +795,10 @@ html.mo-rev::before{clip-path:inset(0 0 100% 0)}
 .prose a{color:var(--em);text-decoration:underline;text-underline-offset:3px}
 .faq details.rv{transition:opacity .9s var(--mo-ease)}
 a.card.lk h3{margin:0}
+
+/* Footer social icons */
+.ftr nav a.social-icon{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;min-height:40px;padding:0;border:1px solid var(--line);border-radius:10px;letter-spacing:0}
+.ftr nav a.social-icon svg{display:block;width:20px;height:20px;fill:currentColor;stroke:none}
+.ftr nav a.social-icon:nth-last-child(3) svg,.ftr nav a.social-icon:nth-last-child(2) svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ftr nav a.social-icon:nth-last-child(3) svg .social-dot{fill:currentColor;stroke:none}
+.ftr nav a.social-icon:hover{border-color:var(--hl);color:var(--hl)}
