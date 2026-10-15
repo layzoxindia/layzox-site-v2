@@ -29,3 +29,11 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Test desktop, mobile, forms and redirects
         run: npm test
+      - name: Save visual QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-browser-screenshots
+          path: test-results/**/quality-*.png
+          if-no-files-found: ignore
+          retention-days: 7
