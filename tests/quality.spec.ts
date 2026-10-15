@@ -67,11 +67,31 @@ test("responsive quality screenshots for human review", async ({ page }, testInf
   const labels = ["home", "software", "clinics"];
   for (let i = 0; i < paths.length; i++) {
     await page.goto(paths[i]);
-    await page.locator("main").scrollIntoViewIfNeeded();
+    // Scroll through the page to exercise IntersectionObserver-based reveals
+    // before generating the human review screenshot. Otherwise full-page
+    // screenshots contain blank sections that a visitor would not see.
+    await page.evaluate(async () => {
+      const step = Math.max(280, Math.round(window.innerHeight * 0.7));
+      for (let y = 0; y < document.documentElement.scrollHeight; y += step) {
+        window.scrollTo(0, y);
+        await new Promise<void>((resolve) => setTimeout(resolve, 75));
+      }
+      window.scrollTo(0, 0);
+    });
     await page.screenshot({
       path: testInfo.outputPath("quality-" + labels[i] + ".png"),
       fullPage: true,
       animations: "disabled",
     });
   }
+});
+
+test("mobile headline remains below the immersive 3D visual stage", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile", "mobile visual stage test");
+  await page.goto("/");
+  const title = page.locator(".hero h1");
+  await expect(title).toBeVisible();
+  const rect = await title.boundingBox();
+  expect(rect?.y).toBeGreaterThan(270);
+  await expect(page.locator(".hero-cta .btn").first()).toBeVisible();
 });
