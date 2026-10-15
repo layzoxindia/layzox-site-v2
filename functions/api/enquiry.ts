@@ -12,7 +12,10 @@ const clean = (v: unknown, max: number, multiline = false) =>
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" } });
 const hits = new Map<string, number[]>();
-export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+// Use a local structural context type: Cloudflare detects the named export at runtime.
+// This avoids requiring Cloudflare-specific ambient types for the shared Next.js typecheck.
+type EnquiryContext = { request: Request; env: Env };
+export const onRequestPost = async ({ request, env }: EnquiryContext): Promise<Response> => {
   const origin = request.headers.get("origin");
   const host = request.headers.get("host");
   if (origin && host) {
