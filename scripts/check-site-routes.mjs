@@ -32,7 +32,8 @@ const pages = [
   ["/accessibility", "accessibility.html"], ["/security", "security.html"],
   ["/sitemap", "sitemap.html"],
   ...["custom", "automation", "web", "mobile", "cloud", "consulting"]
-     .map(s => ["/services/" + s, "services/" + s + ".html"])
+     .map(s => ["/services/" + s, "services/" + s + ".html"]),
+  ...["/industries", "/industries/clinics", "/industries/real-estate", "/industries/education", "/industries/hospitality", "/industries/distribution", "/industries/solar", "/engagement", "/book", "/insights", "/insights/whatsapp-orders-to-one-system", "/insights/ai-voice-agents-lead-follow-up", "/insights/custom-software-vs-off-the-shelf", "/resources/automation-checklist"].map(r => [r, r.slice(1) + ".html"])
 ];
 const routeSet = new Set(pages.map(([route]) => route));
 const htmlFor = new Map(pages);
@@ -73,7 +74,7 @@ for (const [route, file] of pages) {
 const expectedAliases = [
   "/software-development-company-ranchi", "/custom-software-development",
   "/ai-automation", "/web-application-development", "/mobile-app-development",
-  "/cloud-data-engineering", "/technology-consulting", "/solutions", "/industries",
+  "/cloud-data-engineering", "/technology-consulting", "/solutions",
   "/engineering", "/delivery", "/process", "/products", "/thank-you"
 ];
 for (const route of expectedAliases) {

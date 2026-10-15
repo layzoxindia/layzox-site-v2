@@ -809,3 +809,10 @@ a.card.lk h3{margin:0}
 .skip{background:#ffc233;color:#1c1240}
 .ftr nav a{display:inline-flex;align-items:center;justify-content:center;min-height:24px;min-width:24px}
 a.num{display:inline-flex;align-items:center;min-height:32px}
+/* buttons inside long-form articles keep their button colours */
+.prose a.btn{text-decoration:none}
+.prose a.btn-primary{color:var(--cta-ink,#fff)}
+.prose a.btn-ghost{color:var(--ink)}
+.sec-h>.sec-btns{grid-column:-2/-1;display:flex;flex-wrap:wrap;gap:.8rem;margin-top:.8rem}
+.lzq-in .sec-h{grid-template-columns:1fr}
+.lzq-in .sec-h>.lead{grid-column:1}
