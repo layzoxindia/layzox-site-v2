@@ -3,16 +3,16 @@
 This repository has **two delivery modes**. The current public-facing design is the cinematic static HTML in `public/`; the Next.js components in `app/` and `components/` are legacy/fallback code. Avoid editing the Next.js homepage when the visible page is `public/cinematic.html`.
 
 ## Site source of truth
-- Homepage: `public/cinematic.html`
-- Inner pages: `public/*.html`
+- Homepage: `public/index.html`
+- Inner pages: `public/*.html`, service pages in `public/services/*.html`
 - Design system: `public/cine.css`, `public/motion.js`
 - Company artwork: `public/brand/` (preserve original logos)
-- Canonical routes: `public/_redirects` plus `next.config.mjs`
+- Routes: on Cloudflare Pages each file is served at its clean URL automatically (`approach.html` → `/approach`). `public/_redirects` holds only 301s for retired URLs; `next.config.mjs` mirrors both.
 - SEO for both runtimes: `public/sitemap.xml` and `public/robots.txt`
 - Server form integrations: `functions/api/enquiry.ts` (Cloudflare) and `app/api/enquiry/route.ts` (Next.js)
 
 ## Hosting
-**Cloudflare Pages static site:** publish directory `public`; `public/_redirects` maps canonical routes to the HTML assets and older corporate URLs permanently to their replacements. The `functions/` folder must be included so `/api/enquiry` can work. Check deployment settings and ensure uploaded site includes `_redirects`, `_headers`, `sitemap.xml`, `robots.txt`, assets and the function.
+**Cloudflare Pages static site:** publish directory `public`. Never add `200` rewrites to `.html` files in `_redirects`: Pages strips `.html` with a redirect, so the rewrite loops forever (this broke the live nav in October 2026). `public/_routes.json` limits Functions to `/api/*` so static pages never use Function quota. Redirect `layzox.com` to `www.layzox.com` with a Cloudflare Redirect Rule (dashboard), since `_redirects` cannot match hostnames. The `functions/` folder must be included so `/api/enquiry` can work. Check deployment settings and ensure uploaded site includes `_redirects`, `_headers`, `sitemap.xml`, `robots.txt`, assets and the function.
 
 **Next.js server:** `npm ci && npm run build && npm start`. `next.config.mjs` maps the exact same public HTML pages and redirects obsolete paths.
 

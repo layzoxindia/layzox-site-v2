@@ -1,38 +1,31 @@
-/cinematic / 301
-/ /cinematic.html 200
-/approach /approach.html 200
-/services /services.html 200
-/ai-agents /ai-agents.html 200
-/principles /principles.html 200
-/contact /contact.html 200
-/about /about.html 200
-/why-layzox /why-layzox.html 200
-/faq /faq.html 200
-/careers /careers.html 200
-/privacy /privacy.html 200
-/terms /terms.html 200
-/services/custom /svc-custom.html 200
-/services/automation /svc-automation.html 200
-/services/web /svc-web.html 200
-/services/mobile /svc-mobile.html 200
-/services/cloud /svc-cloud.html 200
-/services/consulting /svc-consulting.html 200
-/software-development-company-ranchi /services/custom 301
-/custom-software-development /services/custom 301
-/ai-automation /services/automation 301
-/web-application-development /services/web 301
-/mobile-app-development /services/mobile 301
-/cloud-data-engineering /services/cloud 301
-/technology-consulting /services/consulting 301
-/solutions /approach 301
-/industries /services 301
-/engineering /approach 301
-/delivery /approach 301
-/process /approach 301
-/products /services 301
-/thank-you /contact 301
-/support /support.html 200
-/cookies /cookies.html 200
-/accessibility /accessibility.html 200
-/security /security.html 200
-/sitemap /sitemap.html 200
+# Cloudflare Pages serves every HTML file at its clean URL automatically:
+#   index.html -> /, approach.html -> /approach, services/custom.html -> /services/custom
+# Do NOT add "200" rewrites to *.html here. Pages strips ".html" with a redirect,
+# so a rewrite to /page.html sends the visitor back to /page and loops forever.
+# Only permanent redirects for retired URLs belong in this file.
+
+# Earlier builds of this site
+/cinematic /  301
+/cinematic.html /  301
+/svc-custom /services/custom  301
+/svc-automation /services/automation  301
+/svc-web /services/web  301
+/svc-mobile /services/mobile  301
+/svc-cloud /services/cloud  301
+/svc-consulting /services/consulting  301
+
+# Old corporate website
+/software-development-company-ranchi /services/custom  301
+/custom-software-development /services/custom  301
+/ai-automation /services/automation  301
+/web-application-development /services/web  301
+/mobile-app-development /services/mobile  301
+/cloud-data-engineering /services/cloud  301
+/technology-consulting /services/consulting  301
+/solutions /approach  301
+/industries /services  301
+/engineering /approach  301
+/delivery /approach  301
+/process /approach  301
+/products /services  301
+/thank-you /contact  301

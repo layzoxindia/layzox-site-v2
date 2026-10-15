@@ -8,6 +8,7 @@ const pub = join(root, "public");
 const errors = [];
 const read = (p) => readFileSync(join(root, p), "utf8");
 const routeText = read("public/_redirects");
+// Rewrites (200) to .html files cause an infinite redirect loop on Cloudflare Pages.
 const redirects = new Map();
 for (const raw of routeText.split(/\r?\n/)) {
   const line = raw.trim();
@@ -17,10 +18,11 @@ for (const raw of routeText.split(/\r?\n/)) {
     errors.push("Invalid Cloudflare route: " + raw); continue;
   }
   if (redirects.has(from)) errors.push("Duplicate route: " + from);
+  if (status === "200" && /\.html$/.test(to)) errors.push("Loop risk: 200 rewrite to an .html file: " + raw);
   redirects.set(from, { to, status });
 }
 const pages = [
-  ["/", "cinematic.html"], ["/approach", "approach.html"],
+  ["/", "index.html"], ["/approach", "approach.html"],
   ["/services", "services.html"], ["/ai-agents", "ai-agents.html"],
   ["/principles", "principles.html"], ["/contact", "contact.html"],
   ["/about", "about.html"], ["/why-layzox", "why-layzox.html"],
@@ -30,7 +32,7 @@ const pages = [
   ["/accessibility", "accessibility.html"], ["/security", "security.html"],
   ["/sitemap", "sitemap.html"],
   ...["custom", "automation", "web", "mobile", "cloud", "consulting"]
-     .map(s => ["/services/" + s, "svc-" + s + ".html"])
+     .map(s => ["/services/" + s, "services/" + s + ".html"])
 ];
 const routeSet = new Set(pages.map(([route]) => route));
 const htmlFor = new Map(pages);
@@ -47,9 +49,8 @@ if (!robots.includes("https://www.layzox.com/sitemap.xml")) errors.push("robots.
 if (!existsSync(join(pub, "404.html"))) errors.push("Missing static 404.html");
 let inspected = 0;
 for (const [route, file] of pages) {
-  const rewrite = redirects.get(route);
-  if (!rewrite || rewrite.to !== "/" + file || rewrite.status !== "200")
-    errors.push("Missing/wrong published rewrite: " + route);
+  // Cloudflare Pages maps files to clean URLs itself; a 200 rewrite to *.html loops forever.
+  if (redirects.has(route)) errors.push("Published route must not appear in _redirects: " + route);
   if (!existsSync(join(pub, file))) { errors.push("Missing HTML: " + file); continue; }
   const html = read("public/" + file);
   if ((html.match(/<h1\b/gi) || []).length !== 1) errors.push("Expected one H1: " + route);

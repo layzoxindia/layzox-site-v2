@@ -8,7 +8,8 @@ Next.js 15 App Router, React 19, TypeScript, `motion` (motion/react), `lenis`, p
 
 ## CURRENT LIVE-PAGE SOURCE
 - Static cinematic HTML in `public/*.html` is what the current canonical route mappings serve. EDIT THESE when changing actual visible pages. The Next.js `app/` and `components/` versions are fallback/legacy and should not be mistaken for the published page.
-- Root routes and legacy redirects must be updated in BOTH `public/_redirects` and `next.config.mjs`.
+- Homepage is `public/index.html`; service pages are `public/services/<slug>.html`. Cloudflare Pages serves files at clean URLs on its own. NEVER add `200` rewrites to `.html` in `public/_redirects` (infinite redirect loop on Pages). `_redirects` holds 301s for retired URLs only; mirror any change in `next.config.mjs`.
+- Security headers live in `public/_headers` (Cloudflare) and `next.config.mjs` (Next); keep them identical. CSP is enforced: a new external script, font, image or API host must be added to both.
 - Static SEO lives in `public/robots.txt` and `public/sitemap.xml` so Cloudflare static and Next.js can both serve it.
 - Run `npm run routes:check` after any navigation or page change.
 

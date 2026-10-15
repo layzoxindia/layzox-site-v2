@@ -8,7 +8,7 @@
 <link rel="canonical" href="https://www.layzox.com/contact">
 <meta name="theme-color" content="#0a0615">
 <meta name="color-scheme" content="dark light">
-<meta property="og:type" content="website"><meta property="og:site_name" content="Layzox"><meta property="og:title" content="Contact Layzox | Start a Project"><meta property="og:description" content="Tell us what is slowing your team down. Call, email or send a short enquiry to Layzox."><meta property="og:url" content="https://www.layzox.com/contact"><meta property="og:image" content="https://www.layzox.com/brand/logo.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://www.layzox.com/brand/logo.png">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Layzox"><meta property="og:title" content="Contact Layzox | Start a Project"><meta property="og:description" content="Tell us what is slowing your team down. Call, email or send a short enquiry to Layzox."><meta property="og:url" content="https://www.layzox.com/contact"><meta property="og:image" content="https://www.layzox.com/brand/og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Layzox: software that moves your business"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://www.layzox.com/brand/og.jpg">
 <link rel="icon" href="/brand/mark.png"><link rel="apple-touch-icon" href="/brand/mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap">
@@ -16,6 +16,7 @@
 <script>try{var t=localStorage.getItem('lzx-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <link rel="stylesheet" href="/cine.css?v=amber8">
 
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.layzox.com/"},{"@type":"ListItem","position":2,"name":"Contact","item":"https://www.layzox.com/contact"}]}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -51,13 +52,13 @@
       </div>
     </div>
     <form class="cform rv" id="cform" novalidate>
-      <div class="fld"><label for="f-name">Your name</label><input id="f-name" name="name" autocomplete="name" placeholder="Alex Morgan"><span class="err" id="e-name" role="alert"></span></div>
-      <div class="fld"><label for="f-email">Email <span class="opt">(email or phone)</span></label><input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="alex@company.com"><span class="err" id="e-email" role="alert"></span></div>
-      <div class="fld"><label for="f-phone">Phone or WhatsApp <span class="opt">(email or phone)</span></label><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+1 555 010 2030"><span class="err" id="e-phone" role="alert"></span></div>
+      <div class="fld"><label for="f-name">Your name</label><input id="f-name" name="name" autocomplete="name" maxlength="120" aria-required="true" placeholder="Alex Morgan"><span class="err" id="e-name" role="alert"></span></div>
+      <div class="fld"><label for="f-email">Email <span class="opt">(email or phone)</span></label><input id="f-email" name="email" type="email" maxlength="160" autocomplete="email" inputmode="email" placeholder="alex@company.com"><span class="err" id="e-email" role="alert"></span></div>
+      <div class="fld"><label for="f-phone">Phone or WhatsApp <span class="opt">(email or phone)</span></label><input id="f-phone" name="phone" type="tel" maxlength="40" autocomplete="tel" inputmode="tel" placeholder="+1 555 010 2030"><span class="err" id="e-phone" role="alert"></span></div>
       <div class="fld hp" aria-hidden="true"><label for="f-web">Website</label><input id="f-web" name="website" tabindex="-1" autocomplete="off"></div>
       <div class="fld"><label for="f-type">What do you need</label>
-        <select id="f-type"><option>Custom software</option><option>AI automation or agent</option><option>Web application</option><option>Mobile app</option><option>Cloud and data</option><option>Not sure yet</option></select></div>
-      <div class="fld"><label for="f-msg">What is slowing the team down</label><textarea id="f-msg" name="msg" placeholder="Orders arrive on WhatsApp, approvals sit in email, and nobody sees the full picture."></textarea><span class="err" id="e-msg" role="alert"></span></div>
+        <select id="f-type" name="type"><option>Custom software</option><option>AI automation or agent</option><option>Web application</option><option>Mobile app</option><option>Cloud and data</option><option>Technology consulting</option><option>Not sure yet</option></select></div>
+      <div class="fld"><label for="f-msg">What is slowing the team down</label><textarea id="f-msg" name="msg" maxlength="4000" aria-required="true" placeholder="Orders arrive on WhatsApp, approvals sit in email, and nobody sees the full picture."></textarea><span class="err" id="e-msg" role="alert"></span></div>
       <button class="btn btn-primary" type="submit" id="send">Send enquiry
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       <p class="fine" style="margin:0">By sending this you agree to our <a href="/privacy">Privacy Policy</a>.</p>
