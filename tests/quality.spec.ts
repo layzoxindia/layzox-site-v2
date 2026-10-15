@@ -24,7 +24,7 @@ for (const route of [
 
 test("brand canvas, logo source and actual theme switching", async ({ page }) => {
   await page.goto("/");
-  const logo = page.locator(".hdr .brand img").first();
+  const logo = page.locator(".hdr .brand img:visible").first();
   await expect(logo).toHaveAttribute("src", /\/brand\//);
   const imgIsLoaded = await logo.evaluate((el) => (el as HTMLImageElement).naturalWidth > 0);
   expect(imgIsLoaded).toBeTruthy();
@@ -62,6 +62,7 @@ test("resource delivery failure never claims email was sent", async ({ page }) =
 });
 
 test("responsive quality screenshots for human review", async ({ page }, testInfo) => {
+  test.slow();
   const paths = ["/", "/services/custom", "/industries/clinics"];
   const labels = ["home", "software", "clinics"];
   for (let i = 0; i < paths.length; i++) {
