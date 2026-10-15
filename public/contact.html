@@ -146,9 +146,8 @@ if($('#mq2'))fillMarq('#mq2',['Operations','Sales follow-up','Clinics','Real est
   function bad(id,eid,msg){var el=$(id);$(eid).textContent=msg;if(msg){el.setAttribute('aria-invalid','true');el.setAttribute('aria-describedby',eid.slice(1))}else{el.removeAttribute('aria-invalid');el.removeAttribute('aria-describedby')}return !!msg}
   function wa(text){
     var url='https://wa.me/'+PHONE+'?text='+encodeURIComponent(text);
-    note.textContent='Opening WhatsApp. If nothing opened, use the link below.';
-    var w=null; try{w=window.open(url,'_blank','noopener')}catch(err){}
-    if(!w){ var a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Open WhatsApp with your message';note.textContent='';note.appendChild(a) }
+    note.textContent='Automatic delivery is unavailable. Your message has not been sent. ';
+    var a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Continue in WhatsApp to send your message';note.appendChild(a);
   }
   form.addEventListener('submit',function(e){
     e.preventDefault();
