@@ -13,6 +13,11 @@ const pages = [
   "/careers",
   "/privacy",
   "/terms",
+  "/support",
+  "/cookies",
+  "/accessibility",
+  "/security",
+  "/sitemap",
   "/services/custom",
   "/services/automation",
   "/services/web",
@@ -84,4 +89,7 @@ test("SEO documents and logo assets are served", async ({ request }) => {
   }
   const sitemap = await (await request.get("/sitemap.xml")).text();
   expect(sitemap).toContain("https://www.layzox.com/services/automation");
+  for (const path of ["/support", "/cookies", "/accessibility", "/security", "/sitemap"]) {
+    expect(sitemap).toContain(`https://www.layzox.com${path}`);
+  }
 });
