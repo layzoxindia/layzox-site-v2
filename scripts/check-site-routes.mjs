@@ -26,6 +26,9 @@ const pages = [
   ["/about", "about.html"], ["/why-layzox", "why-layzox.html"],
   ["/faq", "faq.html"], ["/careers", "careers.html"],
   ["/privacy", "privacy.html"], ["/terms", "terms.html"],
+  ["/support", "support.html"], ["/cookies", "cookies.html"],
+  ["/accessibility", "accessibility.html"], ["/security", "security.html"],
+  ["/sitemap", "sitemap.html"],
   ...["custom", "automation", "web", "mobile", "cloud", "consulting"]
      .map(s => ["/services/" + s, "svc-" + s + ".html"])
 ];
