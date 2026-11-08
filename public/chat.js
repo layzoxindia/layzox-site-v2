@@ -4,7 +4,7 @@
 (function(){
 'use strict';
 if(window.__lzc)return;window.__lzc=1;
-var WA='919263139771', PHONE='+91 92631 39770', EMAIL='contact@layzox.com';
+var WA='919263139771', PHONE='+91 92631 39770', EMAIL='contact@layzox.com', TZ_DEFAULT='Asia/Kolkata';
 var d=document, RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 function wa(t){return 'https://wa.me/'+WA+'?text='+encodeURIComponent(t)}
 function el(tag,cls,txt){var e=d.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
@@ -220,7 +220,9 @@ var EMRE=/^[^\s@,;<>"']+@[^\s@,;<>"']+\.[^\s@,;<>"']{2,}$/;
 var bk=d.getElementById('book');
 if(bk){
   var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}
-  d.getElementById('bk-tz').textContent=tz||'not detected';
+  if(!tz)tz=TZ_DEFAULT;
+  var ist=function(){try{return new Date().toLocaleString('en-GB',{timeZone:TZ_DEFAULT,dateStyle:'medium',timeStyle:'short'})+' IST'}catch(e){return ''}};
+  d.getElementById('bk-tz').textContent=tz===TZ_DEFAULT?'IST (UTC+05:30)':tz;
   var days=d.getElementById('book-days'),dt=new Date(),n=0;
   while(n<6){dt.setDate(dt.getDate()+1);if(dt.getDay()===0)continue;var b=el('button','',dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'}));b.type='button';b.setAttribute('aria-pressed','false');days.appendChild(b);n++}
   chips(bk);
@@ -232,7 +234,7 @@ if(bk){
     if(!v.name){err.textContent='Add your name.';d.getElementById('bk-name').focus();return}
     if(!v.email&&v.phone.replace(/\D/g,'').length<8){err.textContent='Add a valid email, or a phone number with country code.';d.getElementById('bk-contact').focus();return}
     btn.disabled=true;err.textContent='Sending…';
-    send({kind:'project',name:v.name,email:v.email,phone:v.phone,type:'Call request',message:'Call request: '+v.day+', '+v.slot+(tz?' ('+tz+')':'')+(v.topic?'\nTopic: '+v.topic:'')+'\n(Sent from the Book a call page)',page:location.href,website:''},
+    send({kind:'project',name:v.name,email:v.email,phone:v.phone,type:'Call request',message:'Call request: '+v.day+', '+v.slot+(tz?' ('+tz+')':'')+(v.topic?'\nTopic: '+v.topic:'')+(ist()?'\nRequested at: '+ist():'')+'\n(Sent from the Book a call page)',page:location.href,website:''},
       function(){btn.disabled=false;err.className='lzq-ok';err.textContent='Request received. We will confirm your slot by email or phone.';try{window.dataLayer&&window.dataLayer.push({event:'generate_lead',form:'book'})}catch(x){}},
       function(){btn.disabled=false;err.textContent='We could not send it automatically. Please use “Request on WhatsApp” or email '+EMAIL+'.'})});
 }

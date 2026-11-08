@@ -87,6 +87,7 @@ export async function POST(req: Request) {
 
   const subject =
     kind === "project" ? `New project enquiry from ${f.name}` : (kind === "resource" ? `Resource download (${f.type || "resource"}): ${f.email}` : `Product waitlist: ${f.email}`);
+  const receivedIST = (() => { try { return new Date().toLocaleString("en-GB", { timeZone: "Asia/Kolkata", dateStyle: "medium", timeStyle: "short" }) + " IST"; } catch { return ""; } })();
   const lines = [
     `Type: ${kind}`,
     f.name && `Name: ${f.name}`,
@@ -95,7 +96,7 @@ export async function POST(req: Request) {
     f.company && `Company: ${f.company}`,
     f.type && `Project type: ${f.type}`,
     f.message && `\nMessage:\n${f.message}`,
-    f.page && `\nSent from: ${f.page}`,
+    f.page && `\nSent from: ${f.page}`, receivedIST && `Received: ${receivedIST}`,
   ].filter(Boolean);
 
   try {
